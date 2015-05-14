@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<head>
+<title>Page Title</title>
+<style>
+html, body {
+  width:  100%;
+  height: 100%;
+  margin: 0px;
+}
+</style>
+</head>
+
+<body>
+<canvas id="a" width="1000" height="1000" style="border:1px dotted;" onclick="draw_b();return false"></canvas>
+<script type="text/javascript">
+
+	var v = 15;
+
+	var canvas_a = document.getElementById("a");
+	var context_a = canvas_a.getContext("2d");
+		
+	context_a.canvas.width  = window.innerWidth;
+	context_a.canvas.height = window.innerHeight;
+
+		
+	function updateNode(node)
+	{
+		console.log("old r: "+node.r);
+		node.r+= (Math.random()-0.5)*(Math.PI/6);
+		console.log("new r: "+node.r);
+		node.x = node.x + Math.cos(node.r)*v;
+		node.y = node.y - Math.sin(node.r)*v;
+		return node;
+	}
+		
+		
+	function draw_b()
+	{
+		context_a.clearRect(0, 0, canvas_a.width, canvas_a.height);
+		
+		var canvas_w = canvas_a.getAttribute("width");
+		var canvas_h = canvas_a.getAttribute("height");
+		
+		start = {x:canvas_w/2+(Math.random()*400-200), y:canvas_h/2+(Math.random()*200), r:Math.random()*Math.PI*2};
+		end   = {x:canvas_w/2+(Math.random()*400-200), y:canvas_h/2+(Math.random()*200), r:Math.random()*Math.PI*2};
+		c1    = {x:canvas_w/2+(Math.random()*400-200), y:canvas_h/2+(Math.random()*200), r:Math.random()*Math.PI*2};
+		c2    = {x:canvas_w/2+(Math.random()*400-200), y:canvas_h/2+(Math.random()*200), r:Math.random()*Math.PI*2};
+		
+		context_a.beginPath();
+		context_a.moveTo(start.x,start.y);
+			
+		for (var x = 0 ; x < 100 ; x+=1)
+		{
+			context_a.bezierCurveTo(c1.x,c1.y,c2.x,c2.y,end.x,end.y);
+			console.log("x: "+start.x+"y: "+start.y+"x: "+end.x+"y: "+end.y);
+			context_a.moveTo(start.x,start.y);
+			start = updateNode(start);
+			end   = updateNode(end);
+			c1    = updateNode(c1);
+			c2    = updateNode(c2);
+		}
+			
+		context_a.strokeStyle = "#181818";
+		context_a.stroke();
+		
+		
+		
+		
+	
+	
+		
+	}
+
+</script>
+</body>
